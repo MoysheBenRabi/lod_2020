@@ -12,8 +12,7 @@
 
 ## Опиасние файлов:
 
-falcon_core/src/com/falcon/core/FalconTopology.scala - формирование топологии Storm 
-falcon_core/src/com/falcon/core/IPXSpout.scala - Поставщик пакетов для обработки (в прототипе используется более простой подход - и агент и обработка собраны физически в одной топологии) 
-falcon_core/src/com/falcon/core/TaggerBolt.scala - Прототип анализатра.
-
-deep - прототип ситемы анализа состояния рабочих станций с целью предсказания риска атаки.
+- falcon_core/src/com/falcon/core/FalconTopology.scala - формирование топологии Storm 
+- falcon_core/src/com/falcon/core/IPXSpout.scala - Поставщик пакетов для обработки (в прототипе используется более простой подход - и агент и обработка собраны физически в одной топологии) 
+- falcon_core/src/com/falcon/core/TaggerBolt.scala - Прототип анализатра.
+- deep - прототип ситемы анализа состояния рабочих станций с целью предсказания риска атаки.
