@@ -1,0 +1,17 @@
+play[test] **************************
+
+GATHERING FACTS *********************
+ok:[WS_host_1]
+
+TASK: [write FACTS in VAR]***********
+ok:[log]
+
+TASK: [Start cisco defense]
+ok:[WS_host_cisco]
+
+TASK: [RED IDX]
+ok:[WS_host_1]
+
+PLAY RECAP **************************
+[WS_host_1]  : ok= 1
+[WS_host_cisco]

@@ -1,0 +1,141 @@
+<head>
+	<meta charset="utf-8">
+	<style>
+    textarea {
+		//width: 90%; /* Ширина поля в процентах */
+		//height: 200px; /* Высота поля в пикселах */
+		resize: none; /* Запрещаем изменять размер */
+    } 
+    </style>
+</head>
+<body onload="start();">
+<script>
+var i = 0;
+var paused = false;
+function xr(url) {
+	el = document.getElementById("te");
+	el.value += 'beg\n'
+	
+	// 1. Создаём новый объект XMLHttpRequest
+	var xhr = new XMLHttpRequest();
+	el.value += 'new\n'
+
+	// 2. Конфигурируем его: GET-запрос на URL 'phones.json'
+	xhr.open('GET', url, false);
+	el.value += 'get\n'
+
+	// 3. Отсылаем запрос
+	xhr.send();
+	el.value += 'send\n'
+
+	// 4. Если код ответа сервера не 200, то это ошибка
+	if (xhr.status != 200) {
+	  // обработать ошибку
+	  el.value += string(xhr.status)+'\n'
+	  alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+	} else {
+	  // вывести результат
+	  el.value += xhr.responseText; // responseText -- текст ответа.
+	  el.value += '\n200 ok\n'
+	}
+	p = document.getElementById("pid");
+	p.innerhtml += 'added text '
+	el.value += 'p id ok\n'
+	return xhr.responseText;
+}
+  function countRabbits() {
+    for(let i=1; i<=3; i++) {
+		s = "Кролик номер " + i
+      //alert(s);
+	  element = document.getElementById("te");
+	  element.value += s + '\n'
+    }
+	xr('http://localhost:85/init');
+  }
+function start() {
+	//По нажатию на кнопку наш таймер начнет работать:
+	var elem = document.getElementById('te');
+	//elem.value = "0";
+	window.setInterval(timer, 1000);
+}
+//Эта функция будет запускаться каждую секунду
+function timer() {
+	if (pause) {
+		return;
+	}
+	var elem = document.getElementById('te');
+	s = window.i + "\n"; //parseInt преобразует строку в число
+	elem.value += s
+	window.i++;
+	listS = xr('http://localhost:85/iter')
+	list = listS.split(',') 
+	for (col = 1; col < 6+1; col++) {
+		for (row = 4; row > 0; row--) {
+			document.getElementById('te' + (row+1) + col).value = 
+				document.getElementById('te' + row + col).value;
+			document.getElementById('te' + (row+1) + col).style = 
+				document.getElementById('te' + row + col).style;
+		}
+		pole = document.getElementById('te1' + col)
+		pole.value = list[col-1];
+		if (list[5] > 0.7) {
+			pole.style = "background-color: red;";
+			pause = true;
+		} else {
+			pole.style = ""
+		}
+	}
+	//document.getElementById('td11').value = s;
+}
+function read_vanga(){
+	//xr('http://localhost:85/iter')
+	pause = false;
+}
+</script>
+<p id="pid"></p>
+<input type="button" onclick="countRabbits()" value="Считать кроликов!">
+<input type="button" onclick="read_vanga()" value="Vanga!">
+<textarea rows="10" cols="45" name="text" id="te" readonly></textarea>
+<table id = "tb">
+  <tr id = "tr1">
+    <td id = "td11"><textarea rows="2" cols="40" name="text" id="te11" readonly></textarea></td>
+    <td id = "td12"><textarea rows="2" cols="15" name="text" id="te12" readonly></textarea></td>
+    <td id = "td13"><textarea rows="2" cols="15" name="text" id="te13" readonly></textarea></td>
+    <td id = "td11"><textarea rows="2" cols="15" name="text" id="te14" readonly></textarea></td>
+    <td id = "td12"><textarea rows="2" cols="15" name="text" id="te15" readonly></textarea></td>
+    <td id = "td13"><textarea rows="2" cols="15" name="text" id="te16" readonly></textarea></td>
+  </tr>
+  <tr id = "tr1">
+    <td id = "td11"><textarea rows="2" cols="40" name="text" id="te21" readonly></textarea></td>
+    <td id = "td12"><textarea rows="2" cols="15" name="text" id="te22" readonly></textarea></td>
+    <td id = "td13"><textarea rows="2" cols="15" name="text" id="te23" readonly></textarea></td>
+    <td id = "td11"><textarea rows="2" cols="15" name="text" id="te24" readonly></textarea></td>
+    <td id = "td12"><textarea rows="2" cols="15" name="text" id="te25" readonly></textarea></td>
+    <td id = "td13"><textarea rows="2" cols="15" name="text" id="te26" readonly></textarea></td>
+  </tr>
+  <tr id = "tr1">
+    <td id = "td11"><textarea rows="2" cols="40" name="text" id="te31" readonly></textarea></td>
+    <td id = "td12"><textarea rows="2" cols="15" name="text" id="te32" readonly></textarea></td>
+    <td id = "td13"><textarea rows="2" cols="15" name="text" id="te33" readonly></textarea></td>
+    <td id = "td11"><textarea rows="2" cols="15" name="text" id="te34" readonly></textarea></td>
+    <td id = "td12"><textarea rows="2" cols="15" name="text" id="te35" readonly></textarea></td>
+    <td id = "td13"><textarea rows="2" cols="15" name="text" id="te36" readonly></textarea></td>
+  </tr>
+  <tr id = "tr1">
+    <td id = "td11"><textarea rows="2" cols="40" name="text" id="te41" readonly></textarea></td>
+    <td id = "td12"><textarea rows="2" cols="15" name="text" id="te42" readonly></textarea></td>
+    <td id = "td13"><textarea rows="2" cols="15" name="text" id="te43" readonly></textarea></td>
+    <td id = "td11"><textarea rows="2" cols="15" name="text" id="te44" readonly></textarea></td>
+    <td id = "td12"><textarea rows="2" cols="15" name="text" id="te45" readonly></textarea></td>
+    <td id = "td13"><textarea rows="2" cols="15" name="text" id="te46" readonly></textarea></td>
+  </tr>
+  <tr id = "tr1">
+    <td id = "td11"><textarea rows="2" cols="40" name="text" id="te51" readonly></textarea></td>
+    <td id = "td12"><textarea rows="2" cols="15" name="text" id="te52" readonly></textarea></td>
+    <td id = "td13"><textarea rows="2" cols="15" name="text" id="te53" readonly></textarea></td>
+    <td id = "td11"><textarea rows="2" cols="15" name="text" id="te54" readonly></textarea></td>
+    <td id = "td12"><textarea rows="2" cols="15" name="text" id="te55" readonly></textarea></td>
+    <td id = "td13"><textarea rows="2" cols="15" name="text" id="te56" readonly></textarea></td>
+  </tr>
+</table>
+</body>

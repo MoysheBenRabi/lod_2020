@@ -1,0 +1,80 @@
+In [1]: #tr
+   ...: import numpy as np
+   ...: from keras import models, layers
+   ...: from keras.utils import to_categorical
+   ...: folder = r'../../'
+   ...: def load_np():
+   ...:     npa = np.load(folder + r'\train2.npy')
+   ...:     npi = np.load(folder + r'\train2_i.npy')
+   ...:     npx = np.arange(len(npi))
+   ...:     np.random.shuffle(npx)
+   ...:     return npa[npx], npi[npx]
+   ...:
+   ...: #npb = None
+   ...: #network = None
+   ...: def make_net(npa):
+   ...:     network = models.Sequential()
+   ...:     network.add(layers.BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001, center=True, scale=True,
+   ...:                 input_shape=(len(npa[0]),))) # 81, 106
+   ...:     network.add(layers.Dense(1024, activation='relu'))
+   ...:     network.add(layers.BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001, center=True, scale=True))
+   ...:     network.add(layers.Dense(256, activation='relu'))
+   ...:     network.add(layers.BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001, center=True, scale=True))
+   ...:     network.add(layers.Dense(2, activation='softmax'))
+   ...:     network.compile(optimizer='rmsprop',
+   ...:                     loss = 'categorical_crossentropy',
+   ...:                     metrics = ['accuracy'])
+   ...:     return network
+   ...:
+   ...: def fit(network, npa, npb):
+   ...:     npb = to_categorical(npi)
+   ...:     network.fit(npa, npb, epochs=5, batch_size=128)
+   ...:
+   ...: npa, npi = load_np()
+   ...: npa_t = np.load(folder + r'\train2_test.npy')
+   ...: npi_t = to_categorical( np.load(folder + r'\train2_i_test.npy') )
+   ...: network = make_net(npa)
+   ...: fit(network, npa, npi)
+   ...: network.save_weights('netw7.weights')
+   ...: #network = load_net(npa_t)
+   ...: #network.load_weights('net1.weights')
+   ...: loss, acc = network.evaluate(npa_t, npi_t)
+   ...: print(loss, acc)
+   ...: input()
+   ...:
+Using TensorFlow backend.
+2019-11-30 15:35:10.772316: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cudart64_100.dll
+c:\prog\python37\lib\importlib\_bootstrap.py:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 192 from C header, got 216 from PyObject
+  return f(*args, **kwds)
+c:\prog\python37\lib\importlib\_bootstrap.py:219: RuntimeWarning: numpy.ufunc size changed, may indicate binary incompatibility. Expected 192 from C header, got 216 from PyObject
+  return f(*args, **kwds)
+2019-11-30 15:36:09.134662: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library nvcuda.dll
+2019-11-30 15:36:09.982979: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1618] Found device 0 with properties:
+name: GeForce MX230 major: 6 minor: 1 memoryClockRate(GHz): 1.531
+pciBusID: 0000:01:00.0
+2019-11-30 15:36:09.987914: I tensorflow/stream_executor/platform/default/dlopen_checker_stub.cc:25] GPU libraries are statically linked, skip dlopen check.
+2019-11-30 15:36:09.991440: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1746] Adding visible gpu devices: 0
+2019-11-30 15:36:10.000855: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+2019-11-30 15:36:10.014525: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1618] Found device 0 with properties:
+name: GeForce MX230 major: 6 minor: 1 memoryClockRate(GHz): 1.531
+pciBusID: 0000:01:00.0
+2019-11-30 15:36:10.020419: I tensorflow/stream_executor/platform/default/dlopen_checker_stub.cc:25] GPU libraries are statically linked, skip dlopen check.
+2019-11-30 15:36:10.024069: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1746] Adding visible gpu devices: 0
+2019-11-30 15:36:12.262896: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1159] Device interconnect StreamExecutor with strength 1 edge matrix:
+2019-11-30 15:36:12.265305: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1165]      0
+2019-11-30 15:36:12.267301: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1178] 0:   N
+2019-11-30 15:36:12.274512: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1304] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 1360 MB memory) -> physical GPU (device: 0, name: GeForce MX230, pci bus id: 0000:01:00.0, compute capability: 6.1)
+Epoch 1/5
+2019-11-30 15:36:14.778492: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library cublas64_100.dll
+8000000/8000000 [==============================] - 599s 75us/step - loss: 0.6297 - accuracy: 0.6369
+Epoch 2/5
+8000000/8000000 [==============================] - 567s 71us/step - loss: 0.6233 - accuracy: 0.6444
+Epoch 3/5
+8000000/8000000 [==============================] - 736s 92us/step - loss: 0.6215 - accuracy: 0.6464
+Epoch 4/5
+8000000/8000000 [==============================] - 2577s 322us/step - loss: 0.6204 - accuracy: 0.6476
+Epoch 5/5
+8000000/8000000 [==============================] - 3459s 432us/step - loss: 0.6196 - accuracy: 0.6488
+921484/921484 [==============================] - 168s 183us/step
+test
+0.6210504863950728 0.6483606696128845

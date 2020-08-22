@@ -1,0 +1,4 @@
+2019-12-18/15:53:19.451	MainThread,	 INFO	in 'main' at line 110: 	start_server
+2019-12-18/15:53:19.452	MainThread,	 DEBUG	in 'db' at line 40: 	SQLite3Wrapper constructor
+2019-12-18/15:53:19.456	MainThread,	 INFO	in 'db' at line 60: 	=== create tables ===
+2019-12-18/15:53:19.460	MainThread,	 DEBUG	in 'main' at line 113: 	tables_created

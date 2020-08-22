@@ -1,0 +1,56 @@
+8000000/8000000 [==============================] - 745s 93us/step - loss: 0.6298 - accuracy: 0.6368
+Epoch 2/5
+8000000/8000000 [==============================] - 1227s 153us/step - loss: 0.6234 - accuracy: 0.6444
+Epoch 3/5
+8000000/8000000 [==============================] - 1938s 242us/step - loss: 0.6216 - accuracy: 0.6465
+Epoch 4/5
+8000000/8000000 [==============================] - 535s 67us/step - loss: 0.6206 - accuracy: 0.6477
+Epoch 5/5
+8000000/8000000 [==============================] - 570s 71us/step - loss: 0.6198 - accuracy: 0.6485
+on testing
+921484/921484 [==============================] - 88s 95us/step
+0.6201270208630186 0.6489130854606628
+
+#tr
+import numpy as np
+from keras import models, layers
+from keras.utils import to_categorical
+folder = r'../../'
+def load_np():
+    npa = np.load(folder + r'\train2.npy')
+    npi = np.load(folder + r'\train2_i.npy')
+    return npa, npi
+
+#npb = None
+#network = None
+def make_net(npa):
+    network = models.Sequential()
+    network.add(layers.BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001, center=True, scale=True,
+                input_shape=(len(npa[0]),)))
+    network.add(layers.Dense(1024, activation='relu')) # 81, 106
+    network.add(layers.BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001, center=True, scale=True))
+    network.add(layers.Dense(256, activation='relu'))
+    network.add(layers.BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001, center=True, scale=True))
+    network.add(layers.Dense(2, activation='softmax'))
+    network.compile(optimizer='rmsprop',
+                    loss = 'categorical_crossentropy',
+                    metrics = ['accuracy'])
+    return network
+
+def fit(network, npa, npb):
+    npb = to_categorical(npi)
+    network.fit(npa, npb, epochs=5, batch_size=128)
+
+npa, npi = load_np()
+npa_t = np.load(folder + r'\train2_test.npy')
+npi_t = to_categorical( np.load(folder + r'\train2_i_test.npy') )
+network = make_net(npa)
+fit(network, npa, npi)
+network.save_weights('netw6.weights')
+#network = load_net(npa_t)
+#network.load_weights('net1.weights')
+loss, acc = network.evaluate(npa_t, npi_t)
+print(loss, acc)
+#npi[0:100]
+#print(network){
+input()
