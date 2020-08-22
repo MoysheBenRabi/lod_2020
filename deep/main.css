@@ -1,0 +1,95 @@
+body{margin: 0;
+	width: 100%;
+	height: 100vh;
+	font-family: "Exo", sans-serif;
+	color: #fff;
+	background: linear-gradient(-45deg, #1e9bcb, #14afad, #81dbd4, #74e696);
+	background-size: 400% 400%;
+	animation: gradientBG 15s ease infinite;}
+.header{
+    display: flex;justify-content: center;
+}
+
+@keyframes gradientBG {
+	0% {
+		background-position: 0% 50%;
+	}
+    
+    25%{
+        background-position: 50% 50%;
+}
+	50% {
+		background-position: 100% 50%;
+	}
+    75%{
+        background-position: 50% 50%;
+    }
+    
+	100% {
+		background-position: 0% 50%;
+	}
+}
+.main_block{display: flex;justify-content: center;  }
+
+.log1{
+    border-radius: 10px;resize: none;color:red;}
+
+.container{
+    margin-left: 40px; 
+}
+.textarea_tables{
+ resize: none; background: transparent; text-align: center; font-size: 15px; font-weight: bold; 
+}
+
+h1{
+  text-shadow: 10px 5px 2px #4287f5, 0 0 1em blue, 0 0 0.2em blue;
+}
+h2{
+    text-shadow: 10px 5px 2px #4287f5, 0 0 1em blue, 0 0 0.2em blue;
+}
+h3{text-shadow: 10px 5px 2px #4287f5, 0 0 1em blue, 0 0 0.2em blue;
+}
+
+table {
+  border: 3px solid white; 
+border-radius: 10px;
+}
+
+td{
+   border:  2mm ridge rgba(75, 210, 197, 1); 
+}
+
+.second_block{display: flex;justify-content: center;  }
+.secret_table{ border: 3px solid rgba(201, 129, 84, 1); 
+border-radius: 10px; visibility: hidden;}
+.td_erroer{ border:  2mm ridge rgba(201, 84, 84, 1); resize: none; background: transparent; text-align: center; font-size: 15px; font-weight: bold;}
+.tr_error{border:  2mm ridge rgba(201, 84, 84, 1);resize: none; background: transparent; text-align: center; font-size: 15px; font-weight: bold;}
+
+.auto_btn{visibility: hidden; display: inline-block;
+  margin: 40px;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  border-radius: 50%;
+
+  box-shadow: 0 3px 20px rgba(0,0,0,.25),
+  inset 0 2px 0 rgba(255,255,255,.6),
+  0 2px 0 rgba(0,0,0,.1),
+  inset 0 0 20px rgba(0,0,0,.1);}
+
+.man_btn{visibility: hidden; display: inline-block;
+  margin: 40px;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  border-radius: 50%;
+
+  box-shadow: 0 3px 20px rgba(0,0,0,.25),
+  inset 0 2px 0 rgba(255,255,255,.6),
+  0 2px 0 rgba(0,0,0,.1),
+  inset 0 0 20px rgba(0,0,0,.1);}
+.check_btn{display: flex; justify-content: center}
+
+.log_area{resize: none;font-size: 15px; font-weight: bold;  border: 7px solid pink; visibility: hidden}
+.footer{display: flex;justify-content: center;margin-bottom: 100px}
+#log_h1{visibility: hidden}

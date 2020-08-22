@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hunter</title>
+    <link rel="stylesheet" href="main.css">
+    <script>  
+    function scrollToElement(theElement) {
+    document.getElementById(theElement).style.visibility = "visible";
+    document.getElementById("smth1").style.visibility = "visible"
+     document.getElementById("smth2").style.visibility = "visible"    
+      
+    if (typeof theElement === "string") theElement = document.getElementById(theElement);
+    var selectedPosX = 0;
+    var selectedPosY = 0;
+    while (theElement != null) {
+        selectedPosX += theElement.offsetLeft;
+        selectedPosY += theElement.offsetTop;
+        theElement = theElement.offsetParent;
+    }
+
+    window.scrollTo(selectedPosX, selectedPosY);
+}
+
+        async function log_vis()
+        {
+            document.getElementById("log_h1").style.visibility = "visible"  
+			area = document.getElementById("log_textarea")
+			area.style.visibility = "visible"  
+            scrollToElement("log_h1");
+			manu = xr('http://localhost:85/manu')
+			area.value += manu
+			await sleep(2000)
+			scrollToElement("logoId");
+			window.pause = false
+			area.value = ""
+			area.style.visibility = "hidden"
+			head.style.visibility = "hidden"
+        }
+
+		async function log_auto() {
+            head = document.getElementById("log_h1")
+			head.style.visibility = "visible"  
+			area = document.getElementById("log_textarea")
+			area.style.visibility = "visible"  
+			scrollToElement("log_h1");
+			auto = xr('http://localhost:85/auto');
+			/*sp = area.split('\n')
+			for (j = 0; j < sp.length; j++) {
+				area.value += sp[j] + "\n";
+				await sleep(300)
+			});*/
+			area.value += auto
+			await sleep(2000)
+			scrollToElement("logoId");
+			window.pause = false
+			area.value = ""
+			area.style.visibility = "hidden"
+			head.style.visibility = "hidden"
+		}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function demo() {
+  console.log('Taking a break...');
+  await sleep(2000);
+  console.log('Two seconds later, showing sleep in a loop...');
+
+  // Sleep in loop
+  for (let i = 0; i < 5; i++) {
+    if (i === 3)
+      await sleep(2000);
+    console.log(i);
+  }
+}
+
+//demo();
+
+var i = 0;
+var paused = false;
+function xr(url) {
+	//el = document.getElementById("te");
+	//el.value += 'beg\n'
+	
+	// 1. Создаём новый объект XMLHttpRequest
+	var xhr = new XMLHttpRequest();
+	//el.value += 'new\n'
+
+	// 2. Конфигурируем его: GET-запрос на URL 'phones.json'
+	xhr.open('GET', url, false);
+	//el.value += 'get\n'
+
+	// 3. Отсылаем запрос
+	xhr.send();
+	//el.value += 'send\n'
+
+	// 4. Если код ответа сервера не 200, то это ошибка
+	if (xhr.status != 200) {
+	  // обработать ошибку
+	  //el.value += string(xhr.status)+'\n'
+	  alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+	} else {
+	  // вывести результат
+	  //el.value += xhr.responseText; // responseText -- текст ответа.
+	  //el.value += '\n200 ok\n'
+	}
+	//p = document.getElementById("pid");
+	//p.innerhtml += 'added text '
+	//el.value += 'p id ok\n'
+	return xhr.responseText;
+}
+  function countRabbits() {
+    for(let i=1; i<=3; i++) {
+		s = "Кролик номер " + i
+      //alert(s);
+	  //element = document.getElementById("te");
+	  //element.value += s + '\n'
+    }
+	xr('http://localhost:85/init');
+  }
+function start() {
+	//По нажатию на кнопку наш таймер начнет работать:
+	//var elem = document.getElementById('te');
+	//elem.value = "0";
+	window.setInterval(timer, 1000);
+}
+//Эта функция будет запускаться каждую секунду
+function timer() {
+	if (window.pause) {
+		return;
+	}
+	//var elem = document.getElementById('te');
+	s = window.i + "\n"; //parseInt преобразует строку в число
+	//elem.value += s
+	window.i++;
+	listS = xr('http://localhost:85/iter')
+	list = listS.split(',') 
+	for (col = 1; col < 6+1; col++) {
+		for (row = 13; row > 0; row--) {
+			document.getElementById('te' + (row+1) + col).value = 
+				document.getElementById('te' + row + col).value;
+			document.getElementById('te' + (row+1) + col).style = 
+				document.getElementById('te' + row + col).style;
+		}
+		pole = document.getElementById('te1' + col)
+		pole.value = list[col-1];
+		if (list[5] > 0.6) {
+			pole.style = "background-color: red;";
+			window.pause = true;
+		} else {
+			pole.style = ""
+		}
+	}
+	if (window.pause) {
+		scrollToElement('myId');
+		for (col = 1; col < 7; col++) {
+			document.getElementById('er' + col).value = document.getElementById('te1' + col).value;
+		}
+	}
+	//document.getElementById('td11').value = s;
+}
+function read_vanga(){
+	//xr('http://localhost:85/iter')
+	window.pause = false;
+}
+    </script>
+</head>
+<body onload="start();">
+    <div class="wrapper" id="start">
+        <header class="header">
+           <div class="logo">
+            <img src="logo1.png" alt="" id = "logoId">
+            </div>
+            <div class="container" style = "margin-left: 2%">
+                <h1>Система Управления</h1>
+                <h2>"Эффект сокола"</h2>
+                <h3>Демо</h3>
+                </div>
+        </header>
+        <div class="main">
+           <div class="main_block" id = "upper">
+                <table>
+                <tr>
+              <th>id</th>
+              <th>ProductName</th>
+              <th>Platform</th>
+              <th>Wdft_IsGamer</th>
+              <th>time</th>
+              <th>AttackWeight</th> 
+                </tr>
+                <tr>
+                    <td><textarea name="" id="te11" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te12" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te13" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te14" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te15" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te16" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>
+                <tr>
+                     <td><textarea name="" id="te21" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te22" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te23" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te24" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te25" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te26" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>
+                <tr>
+                      <td><textarea name="" id="te31" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te32" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te33" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te34" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te35" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te36" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>
+                <tr>
+                     <td><textarea name="" id="te41" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te42" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te43" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te44" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te45" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te46" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>
+                <tr>
+                      <td><textarea name="" id="te51" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te52" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te53" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te54" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te55" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te56" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>
+                <tr>
+                     <td><textarea name="" id="te61" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te62" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te63" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te64" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te65" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te66" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="" id="te71" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te72" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te73" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te74" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te75" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te76" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>
+                <tr>
+                      <td><textarea name="" id="te81" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te82" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te83" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te84" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te85" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te86" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="" id="te91" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te92" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te93" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te94" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te95" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te96" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>
+                <tr>
+                     <td><textarea name="" id="te101" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te102" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te103" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te104" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te105" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te106" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>
+                <tr>
+                   <td><textarea name="" id="te111" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te112" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te113" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te114" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te115" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te116" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>
+                <tr>
+                     <td><textarea name="" id="te121" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te122" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te123" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te124" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te125" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te126" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>
+                <tr>
+                    <td><textarea name="" id="te131" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te132" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te133" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te134" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te135" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te136" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>
+                <tr>
+                     <td><textarea name="" id="te141" cols="40" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te142" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te143" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te144" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te145" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                    <td><textarea name="" id="te146" cols="30" rows="2" readonly class="textarea_tables"></textarea></td>
+                </tr>            
+    
+                </table>
+           </div>
+           <br>
+           <br>
+           <br>
+           <div class="second_block">
+                 <table class="secret_table" id="myId">
+                <tr class="tr_error">
+              <th>id</th>
+              <th>ProductName</th>
+              <th>Platform</th>
+              <th>Wdft_IsGamer</th>
+              <th>time</th>
+              <th>AttackWeight</th> 
+                </tr>
+                <tr class="tr_error">
+                    <td class="td_erroer"><textarea class="textarea_tables" name="" id="er1" cols="50" rows="2" readonly></textarea></td>
+                    <td class="td_erroer"><textarea class="textarea_tables" name="" id="er2" cols="30" rows="2" readonly></textarea></td>
+                    <td class="td_erroer"><textarea class="textarea_tables" name="" id="er3" cols="30" rows="2" readonly></textarea></td>
+                    <td class="td_erroer"><textarea class="textarea_tables" name="" id="er4" cols="30" rows="2" readonly></textarea></td>
+                    <td class="td_erroer"><textarea class="textarea_tables" name="" id="er5" cols="30" rows="2" readonly></textarea></td>
+                    <td class="td_erroer"><textarea class="textarea_tables" name="" id="er6" cols="30" rows="2" readonly></textarea></td>
+                </tr>     
+    
+                </table>
+                
+                
+                   
+           </div>
+                  <div class="check_btn">
+                   <button type="button" class="man_btn" id="smth1" onclick="log_vis()" >man</button>
+                   <button type="button" class="auto_btn" id="smth2" onclick="log_auto()" >auto</button>
+        </div>
+                                         
+        </div>
+        <h1 style="display: flex;justify-content: center" id="log_h1">Создание отчета </h1>
+        <div class="footer">
+            <textarea name="" class="log_area" cols="200" rows="50" id="log_textarea">
+            </textarea>
+        </div>
+    </div>
+</body>
+</html>
