@@ -46,7 +46,7 @@ class FalconTopology {
     // Получение данных
     tp.setSpout("kafka_spout", new KafkaSpout[String, String](spoutConfig), 1)
     // Разметка данных нейросетью
-    tp.setBolt("tager_bolt", new TagerBolt).shuffleGrouping("kafka_spout", FalconTopology.TOPIC_WSH_STREAM)
+    tp.setBolt("tager_bolt", new TaggerBolt).shuffleGrouping("kafka_spout", FalconTopology.TOPIC_WSH_STREAM)
     val tupleMapper = new DefaultEsTupleMapper
     // Сохранение данных в Elasticsearch
     tp.setBolt("es_bolt", new EsIndexBolt(esConfig, tupleMapper))
