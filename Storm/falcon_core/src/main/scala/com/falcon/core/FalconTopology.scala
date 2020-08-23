@@ -1,26 +1,15 @@
 package com.falcon.core
 
-import org.apache.storm.kafka.spout.FirstPollOffsetStrategy.EARLIEST
 import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecord}
-import org.apache.storm.Config
-import org.apache.storm.StormSubmitter
-import org.apache.storm.kafka.spout.KafkaSpoutRetryExponentialBackoff.TimeInterval
-import org.apache.storm.tuple.Fields
-import org.apache.storm.tuple.Values
-import org.apache.storm.generated.StormTopology
-import org.apache.storm.kafka.bolt.KafkaBolt
-import org.apache.storm.topology.TopologyBuilder
-import org.apache.storm.utils.Utils
-import java.util.{Properties, UUID}
-
-import org.apache.storm.kafka.bolt.mapper.FieldNameBasedTupleToKafkaMapper
-import org.apache.storm.kafka.bolt.selector.DefaultTopicSelector
-import org.apache.storm.elasticsearch.common.EsConfig
+import org.apache.storm.{Config, StormSubmitter}
 import org.apache.storm.elasticsearch.bolt.EsIndexBolt
-import org.apache.storm.elasticsearch.common.DefaultEsTupleMapper
+import org.apache.storm.elasticsearch.common.{DefaultEsTupleMapper, EsConfig}
+import org.apache.storm.generated.StormTopology
+import org.apache.storm.kafka.spout.FirstPollOffsetStrategy.EARLIEST
+import org.apache.storm.kafka.spout.KafkaSpoutRetryExponentialBackoff.TimeInterval
 import org.apache.storm.kafka.spout.{ByTopicRecordTranslator, KafkaSpout, KafkaSpoutConfig, KafkaSpoutRetryExponentialBackoff}
-
-import scala.collection.mutable
+import org.apache.storm.topology.TopologyBuilder
+import org.apache.storm.tuple.{Fields, Values}
 
 object FalconTopology {
   private val TOPIC_WSH_STREAM = "wsh_stream"

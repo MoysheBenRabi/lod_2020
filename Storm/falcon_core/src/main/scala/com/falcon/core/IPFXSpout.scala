@@ -5,7 +5,7 @@ import org.apache.storm.spout.ShellSpout
 import org.apache.storm.topology.{IRichSpout, OutputFieldsDeclarer}
 import org.apache.storm.tuple.Fields
 
-class IPFXSpout() extends ShellSpout("python", "{absolute path}/IFXSpoutBolt.py") with IRichSpout {
+class IPFXSpout() extends ShellSpout("python", "/var/falcon/python/IFXSpoutBolt.py") with IRichSpout {
 
   override def declareOutputFields(outputFieldsDeclarer: OutputFieldsDeclarer): Unit = {
     outputFieldsDeclarer.declare(new Fields("double", "triple"))
