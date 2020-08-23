@@ -3,3 +3,4 @@ hosts
 /project/target/
 /.idea/
 /lib/
+/project/project/target/

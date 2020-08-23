@@ -1,12 +1,12 @@
 package com.falcon.core
 
 import java.util
-
-import org.apache.storm.task.ShellBolt
-import org.apache.storm.topology.{IRichBolt, OutputFieldsDeclarer}
+import org.apache.storm.spout.ShellSpout
+import org.apache.storm.topology.{IRichSpout, OutputFieldsDeclarer}
 import org.apache.storm.tuple.Fields
 
-class IPFXSpoutBolt() extends ShellBolt("python", "{absolute path}/splitBoltPython.py") with IRichBolt {
+class IPFXSpout() extends ShellSpout("python", "{absolute path}/IFXSpoutBolt.py") with IRichSpout {
+
   override def declareOutputFields(outputFieldsDeclarer: OutputFieldsDeclarer): Unit = {
     outputFieldsDeclarer.declare(new Fields("double", "triple"))
   }
