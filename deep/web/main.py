@@ -86,7 +86,7 @@ def main():
     ]
     def get(self):
         s = '<!DOCTYPE HTML><html><body>'
-        s += 'Hello %s, updated! <br>' % self._current_user
+        s += 'Hello %s, updated! <br>' % '' #  self._current_user
         for url in urls:
             if url[0] != r'/' and url[0] != r"/(.*)":
                 s += '<a href="http://' + server_syte + url[0] + '">' + url[0] + '<a/><br>'

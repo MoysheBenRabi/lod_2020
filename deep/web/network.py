@@ -16,8 +16,8 @@ class Network:
     npi = None
     npt = None
     inited = False
-    test_csv_file = open('../../test.csv', 'r')
-    test_csv_reader = csv.reader(test_csv_file)
+    #test_csv_file = open('../../test.csv', 'r')
+    #test_csv_reader = csv.reader(test_csv_file)
     last82 = []
     head82 = ['MachineIdentifier',
  'ProductName',
@@ -104,8 +104,8 @@ class Network:
 
     def init(self):
         if not self.inited:
-            self.load_np('npa100k.npy', 'npi100k.npy')
-            self.load_tst('npa100k_t.npy', 'npi100k_t.npy')
+            #self.load_np('npa100k.npy', 'npi100k.npy')
+            #self.load_tst('npa100k_t.npy', 'npi100k_t.npy')
             self.make_net2()
         self.inited = True
         print('app inited')
