@@ -1,7 +1,5 @@
 package com.falcon.core
 
-import java.util
-
 import org.apache.storm.kafka.spout.FirstPollOffsetStrategy.EARLIEST
 import org.apache.kafka.clients.consumer.{ConsumerConfig, ConsumerRecord}
 import org.apache.storm.Config
@@ -11,12 +9,10 @@ import org.apache.storm.tuple.Fields
 import org.apache.storm.tuple.Values
 import org.apache.storm.generated.StormTopology
 import org.apache.storm.kafka.bolt.KafkaBolt
-import org.apache.storm.lambda.LambdaSpout
 import org.apache.storm.topology.TopologyBuilder
 import org.apache.storm.utils.Utils
 import java.util.{Properties, UUID}
 
-import com.falcon.core.TagerBolt
 import org.apache.storm.kafka.bolt.mapper.FieldNameBasedTupleToKafkaMapper
 import org.apache.storm.kafka.bolt.selector.DefaultTopicSelector
 import org.apache.storm.elasticsearch.common.EsConfig
@@ -25,27 +21,6 @@ import org.apache.storm.elasticsearch.common.DefaultEsTupleMapper
 import org.apache.storm.kafka.spout.{ByTopicRecordTranslator, KafkaSpout, KafkaSpoutConfig, KafkaSpoutRetryExponentialBackoff}
 
 import scala.collection.mutable
-
-object KafkaProducerTopology {
-  def newTopology(brokerUrl: String, topicName: String): StormTopology = {
-    val builder = new TopologyBuilder
-    builder.setSpout("spout", () => {
-      def foo() = {
-        Utils.sleep(1000) //Throttle this spout a bit to avoid maxing out CPU
-
-        UUID.randomUUID.toString
-      }
-
-      foo()
-    })
-
-    val bolt = new KafkaBolt[String, String]().withProducerProperties(newProps(brokerUrl, topicName)).withTopicSelector(new DefaultTopicSelector(topicName)).withTupleToKafkaMapper(new FieldNameBasedTupleToKafkaMapper("key", "lambda"))
-    builder.setBolt("forwardToKafka", bolt, 1).shuffleGrouping("spout")
-    builder.createTopology
-  }
-
-  private def newProps(brokerUrl: String, topicName: String) = new Properties() {}
-}
 
 object FalconTopology {
   private val TOPIC_WSH_STREAM = "wsh_stream"
@@ -67,7 +42,6 @@ class FalconTopology {
     System.out.println("Running with broker url: " + brokerUrl)
     val tpConf = getConfig
     // Получение данных из Kafka. Данные представляют собой стоку с метриками
-    StormSubmitter.submitTopology(FalconTopology.TOPIC_WSH + "-producer", tpConf, KafkaProducerTopology.newTopology(brokerUrl, FalconTopology.TOPIC_WSH))
     StormSubmitter.submitTopology("falcon-topology", tpConf, getTopologyKafkaSpout(getKafkaSpoutConfig(brokerUrl)))
   }
 
@@ -92,7 +66,7 @@ class FalconTopology {
 
   protected def getKafkaSpoutConfig(bootstrapServers: String): KafkaSpoutConfig[String, String] = {
     val trans = new ByTopicRecordTranslator[String, String]((r: ConsumerRecord[String,String]) => new Values(r.topic, Integer.valueOf(r.partition), java.lang.Long.valueOf(r.offset), r.key, r.value), new Fields("topic", "partition", "offset", "key", "value"), FalconTopology.TOPIC_WSH_STREAM)
-    KafkaSpoutConfig.builder(bootstrapServers, FalconTopology.TOPIC_WSH).setProp(ConsumerConfig.GROUP_ID_CONFIG, "kafkaSpoutTestGroup").setRetry(getRetryService).setRecordTranslator(trans).setOffsetCommitPeriodMs(10000).setFirstPollOffsetStrategy(EARLIEST).setMaxUncommittedOffsets(250).build
+    KafkaSpoutConfig.builder(bootstrapServers, FalconTopology.TOPIC_WSH).setProp(ConsumerConfig.GROUP_ID_CONFIG, "FalconTopologyGroup").setRetry(getRetryService).setRecordTranslator(trans).setOffsetCommitPeriodMs(10000).setFirstPollOffsetStrategy(EARLIEST).setMaxUncommittedOffsets(250).build
   }
 
   protected def getRetryService = new KafkaSpoutRetryExponentialBackoff(TimeInterval.microSeconds(500), TimeInterval.milliSeconds(2), Integer.MAX_VALUE, TimeInterval.seconds(10))
