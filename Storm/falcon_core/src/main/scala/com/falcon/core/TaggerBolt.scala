@@ -7,7 +7,7 @@ import org.apache.storm.topology.{IRichBolt, OutputFieldsDeclarer}
 import org.apache.storm.tuple.Fields
 
 
-class TagerBolt() extends ShellBolt("python", "/var/falcon/python/TaggerBoltPython.py") with IRichBolt {
+class TaggerBolt() extends ShellBolt("python", "/var/falcon/python/TaggerBolt.py") with IRichBolt {
   override def declareOutputFields(outputFieldsDeclarer: OutputFieldsDeclarer): Unit = {
     outputFieldsDeclarer.declare(new Fields("alarm_tag"))
   }
